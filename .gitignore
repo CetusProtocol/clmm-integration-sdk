@@ -1,0 +1,8 @@
+node_modules/**/*
+package-lock.json
+yarn.lock
+dist/**/*
+dist-origin/**/*
+.vscode
+
+.DS_Store
