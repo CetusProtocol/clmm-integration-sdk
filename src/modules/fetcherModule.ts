@@ -34,7 +34,7 @@ export class FetcherModule implements IModule {
         return false
       }
       const wr = change as Types.WriteSetChange_WriteResource
-      return wr.data.type === `${modules.ClmmIntegrate}::fetcher::FetchTicksResult`
+      return wr.data.type === `${modules.CetusIntegrate}::fetcher::FetchTicksResult`
     })
     if (valueData.length === 0) {
       return tickList
@@ -49,7 +49,7 @@ export class FetcherModule implements IModule {
   async getTicks(params: GetTickParams) {
     const { modules, simulationAccount } = this.sdk.sdkOptions.networkOptions
     const client = new AptosClient(this.sdk.sdkOptions.rpcUrl)
-    const moduleName = `${modules.ClmmIntegrate}::scripts`
+    const moduleName = `${modules.CetusIntegrate}::scripts`
     const funcName = 'fetch_ticks'
     const typeArguments = [
       new TxnBuilderTypes.TypeTagStruct(TxnBuilderTypes.StructTag.fromString(params.coinTypeA)),

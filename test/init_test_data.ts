@@ -4,20 +4,13 @@ import { SDK, SdkOptions } from '../src/sdk'
 const defaultNetworkOptions: SdkOptions = {
   rpcUrl: 'https://fullnode.testnet.aptoslabs.com',
   networkOptions: {
-    nativeToken: '0x1::aptos_coin::AptosCoin',
-    launchpad:{
-      cetusLaunchpad: '0x9043ed94101f478454e92632b86f28daab3c5842e8886284b6165d074a86bd1a',
-      crowdCoin: '0xeeccf5298ac6fe5b05c96f6d941d3a5bb4e856fb405a188aefd7be169f4acabe'
-    },
     simulationAccount: {
       pubkey: '0x40b00ab4323dddef193e9fef41830a96456a8b875c4e5cb5a4e666d9a75fed51',
       address: '0x251dda55e5071be8c761c8a99d7af559ccb6ccc52ad3f945712d3ae8b87c35e0'
     },
     modules: {
-      TokenDeployer: '0x3cfe7b9f6106808a8178ebd2d5ae6656cd0ccec15d33e63fd857c180bde8da75	',
-      LiquidswapDeployer: '0xa7f01413d33ba919441888637ca1607ca0ddcbfa3c0a9ddea64743aaa560e498',
-      ClmmIntegrate: '0xd58630ae0012aa3c6fa61d2a9038bb79382e022ff159bfe4ad78d9d5c72cb08d',
-      IntegerMate: '0xa7f01413d33ba919441888637ca1607ca0ddcbfa3c0a9ddea64743aaa560e498',
+      CetusClmm: '0xa7f01413d33ba919441888637ca1607ca0ddcbfa3c0a9ddea64743aaa560e498',
+      CetusIntegrate: '0xd58630ae0012aa3c6fa61d2a9038bb79382e022ff159bfe4ad78d9d5c72cb08d',
     },
   },
 }

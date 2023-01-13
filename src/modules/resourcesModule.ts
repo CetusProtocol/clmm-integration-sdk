@@ -1,5 +1,4 @@
 import BN from 'bn.js'
-import { newBits, TickData } from '../types/clmmpool'
 import { hexToString } from '../utils/hex'
 import { CachedContent } from '../utils/cachedContent'
 import { composeType } from '../utils/contracts'
@@ -66,25 +65,6 @@ export type CoinType = {
   struct_name: string
 }
 
-export type Position = {
-  name: string
-  pool: AptosResourceType
-  liquidity: string
-  tick_lower_index: string
-  tick_upper_index: string
-  fee_growth_inside_a: string
-  fee_owed_a: string
-  fee_growth_inside_b: string
-  fee_owed_b: string
-  reward_amount_owed_0: string
-  reward_amount_owed_1: string
-  reward_amount_owed_2: string
-  reward_growth_inside_0: string
-  reward_growth_inside_1: string
-  reward_growth_inside_2: string
-  index: number
-}
-
 export type CoinStore =
   | {
       coinAddress: AptosResourceType
@@ -120,7 +100,7 @@ export class ResourcesModule implements IModule {
   }
 
   private async getPoolImmutablesResource(): Promise<any[]> {
-    const contractAddress = this._sdk.sdkOptions.networkOptions.modules.LiquidswapDeployer
+    const contractAddress = this._sdk.sdkOptions.networkOptions.modules.CetusClmm
     const immutablesJsonKey = `${contractAddress}_getMmutablesPools`
     const immutablesData = this.getCacheData(immutablesJsonKey)
     let resourcesJson
@@ -137,7 +117,7 @@ export class ResourcesModule implements IModule {
   }
 
   async getPools(assignPools: string[] = [], offset = 0, limit = 100): Promise<Pool[]> {
-    const contractAddress = this._sdk.sdkOptions.networkOptions.modules.LiquidswapDeployer
+    const contractAddress = this._sdk.sdkOptions.networkOptions.modules.CetusClmm
 
     const poolArray: Pool[] = []
     const mapData = await this.getPoolImmutablesResource()
@@ -259,28 +239,6 @@ export class ResourcesModule implements IModule {
     }
     this.updateCache(cacheKey, poolState, cacheTime24h)
     return poolState
-  }
-
-  async getTickDataByIndex(tickHandle: string, tickIndex: number): Promise<TickData> {
-    const resource = await this._sdk.client.getTableItem(tickHandle, {
-      key_type: `${this.sdk.sdkOptions.networkOptions.modules.IntegerMate}::i64::I64`,
-      value_type: `${this.sdk.sdkOptions.networkOptions.modules.LiquidswapDeployer}::pool::Tick`,
-      key: newBits(tickIndex),
-    })
-
-    const itemJson = JSON.parse(JSON.stringify(resource))
-
-    const tick: TickData = {
-      index: itemJson.index,
-      sqrtPrice: itemJson.sqrt_price,
-      liquidityGross: itemJson.liquidity_gross,
-      liquidityNet: itemJson.liquidity_net,
-      feeGrowthOutsideA: itemJson.fee_growth_outside_a,
-      feeGrowthOutsideB: itemJson.fee_growth_outside_b,
-      rewardersGrowthOutside: itemJson.rewarders_growth_outside,
-    }
-
-    return tick
   }
 
   async getGlobalConfig(swapAddress: string, forceRefresh = true): Promise<GlobalConfig> {

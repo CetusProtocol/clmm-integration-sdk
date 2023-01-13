@@ -5,20 +5,13 @@ import { AptosResourceType } from './types/aptos'
 export type SdkOptions = {
     rpcUrl: string
     networkOptions: {
-      nativeToken: AptosResourceType
-      launchpad: {
-        cetusLaunchpad: AptosResourceType
-        crowdCoin: AptosResourceType
-      }
       simulationAccount: {
         pubkey: string
         address: string
       }
       modules: {
-        LiquidswapDeployer: AptosResourceType
-        ClmmIntegrate: AptosResourceType
-        TokenDeployer: AptosResourceType
-        IntegerMate: AptosResourceType
+        CetusClmm: AptosResourceType
+        CetusIntegrate: AptosResourceType
       } & Record<string, AptosResourceType>
     }
   }
@@ -47,7 +40,7 @@ export class SDK {
 
     async getGlobalConfig(forceRefresh = false): Promise<GlobalConfig> {
         if (this.globalConfig.protocol_fee_rate.length === 0 || forceRefresh) {
-          this.globalConfig = await this._resources.getGlobalConfig(this._sdkOptions.networkOptions.modules.LiquidswapDeployer)
+          this.globalConfig = await this._resources.getGlobalConfig(this._sdkOptions.networkOptions.modules.CetusClmm)
         }
         return this.globalConfig
       }

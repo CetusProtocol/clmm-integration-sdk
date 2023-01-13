@@ -1,4 +1,4 @@
-import { CoinInfo, CoinStore, GlobalConfig, Pool, PoolState, Position } from '../modules/resourcesModule'
+import { CoinInfo, CoinStore, GlobalConfig, Pool, PoolState } from '../modules/resourcesModule'
 import Decimal from '../utils/decimal'
 
 export type AptosResourceType = string
@@ -17,11 +17,6 @@ export const PoolsStruct = 'Pools'
 export const PoolLpModule = 'pool'
 export const PoolLpStruct = 'Pool'
 
-export const LaunchpadPoolLpModule = 'crowdsale'
-export const LaunchpadPoolLpStruct = 'CrowdsalePool'
-export const LaunchpadRouterModule = 'router'
-export const LaunchpadPoolLiquidityCoinType = 'cscoin'
-
 export const IntegrateLiquidityModule = 'liquidity'
 export const IntegrateScriptsModule = 'scripts'
 
@@ -32,8 +27,6 @@ export type AptosCacheResource =
   | CoinStore[]
   | Pool[]
   | PoolState
-  | Position
-  | Position[]
   | number
   | GlobalConfig
 
@@ -73,29 +66,6 @@ export type AptosPoolResource = {
   mint_capability: {
     dummy_field: boolean
   }
-}
-
-export type TxPayloadCallFunction = {
-  type: string
-  function: string
-  arguments: any[]
-  type_arguments: any[]
-}
-
-export type TxPayloadInstallModule = {
-  type: 'module_bundle_payload'
-  modules: { bytecode: string }[]
-}
-
-export type AptosTxPayload = TxPayloadCallFunction | TxPayloadInstallModule
-
-export type AptosCreateTx = {
-  sender: string
-  maxGasAmount: string
-  gasUnitPrice: string
-  gasCurrencyCode: string
-  expiration: string
-  payload: AptosTxPayload
 }
 
 /**
