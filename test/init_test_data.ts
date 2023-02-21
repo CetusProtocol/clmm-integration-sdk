@@ -2,7 +2,7 @@ import { AptosAccount, AptosAccountObject, HexString } from 'aptos'
 import { SDK, SdkOptions } from '../src/sdk'
 
 const defaultNetworkOptions: SdkOptions = {
-  rpcUrl: 'https://fullnode.testnet.aptoslabs.com',
+  rpcUrl: 'https://fullnode.mainnet.aptoslabs.com',
   networkOptions: {
     simulationAccount: {
       pubkey: '0x40b00ab4323dddef193e9fef41830a96456a8b875c4e5cb5a4e666d9a75fed51',
@@ -14,11 +14,12 @@ const defaultNetworkOptions: SdkOptions = {
     },
   },
 }
-export const cetusUrl = 'https://api.devcetus.com'
+// export const cetusUrl = 'https://api.devcetus.com'
+export const cetusUrl = "https://fullnode.mainnet.aptoslabs.com/v1"
 
 export const launchpadPoolAddress = ["0x8c0beb3aad6dc468f252c882fd22c8a3e91658242640f1364be953c9ef638885"]
 
-export const poolAddress = '0x3904fc6d0dcb6e1937a6aced4597ec383afc752676d89f1d59b3d30b959fe161'
+export const poolAddress = '0x9d68e56fff677c57342a031ac3ab2999946c98db4ff29330e33273839bae46d5'
 export const positionName = 'Cetus LP | Pool2-15'
 
 export const faucetSwap = '0x3cfe7b9f6106808a8178ebd2d5ae6656cd0ccec15d33e63fd857c180bde8da75'
