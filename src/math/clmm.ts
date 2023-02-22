@@ -152,7 +152,8 @@ export function getNextSqrtPriceFromOutput(sqrtPrice: BN, liquidity: BN, amount:
 
 /**
  * Get the amount of delta_a or delta_b from input parameters, and round up result.
- *
+ * When calculate max amount out, the result will exceed u64.
+ * 
  * @param currentSqrtPrice
  * @param targetSqrtPrice
  * @param liquidity
@@ -160,9 +161,25 @@ export function getNextSqrtPriceFromOutput(sqrtPrice: BN, liquidity: BN, amount:
  * @returns
  */
 export function getDeltaUpFromInput(currentSqrtPrice: BN, targetSqrtPrice: BN, liquidity: BN, aToB: boolean): BN {
-  return aToB
-    ? getDeltaA(targetSqrtPrice, currentSqrtPrice, liquidity, true)
-    : getDeltaB(currentSqrtPrice, targetSqrtPrice, liquidity, true)
+  const sqrtPriceDiff = currentSqrtPrice.gt(targetSqrtPrice) ? currentSqrtPrice.sub(targetSqrtPrice) : targetSqrtPrice.sub(currentSqrtPrice)
+
+  if (liquidity.eq(ZERO) || sqrtPriceDiff.eq(ZERO)) {
+    return ZERO
+  }
+
+  let result
+  if (aToB) {
+    const numberator = liquidity.mul(sqrtPriceDiff).shln(64)
+    const denomminator = targetSqrtPrice.mul(currentSqrtPrice)
+    const quotient = numberator.div(denomminator)
+    const remainder = numberator.mod(denomminator)
+    result = !remainder.eq(ZERO) ? quotient.add(ONE): quotient
+  } else {
+    let product = liquidity.mul(sqrtPriceDiff)
+    let shoudRoundUp = product.and(U64_MAX).gt(ZERO)
+    result = shoudRoundUp ? product.shrn(64).add(ONE): product.shrn(64)
+  }
+  return result
 }
 
 /**
@@ -171,13 +188,28 @@ export function getDeltaUpFromInput(currentSqrtPrice: BN, targetSqrtPrice: BN, l
  * @param currentSqrtPrice
  * @param targetSqrtPrice
  * @param liquidity
- * @param aTob
+ * @param aToB
  * @returns
  */
-export function getDeltaDownFromOutput(currentSqrtPrice: BN, targetSqrtPrice: BN, liquidity: BN, aTob: boolean): BN {
-  return aTob
-    ? getDeltaB(targetSqrtPrice, currentSqrtPrice, liquidity, false)
-    : getDeltaA(currentSqrtPrice, targetSqrtPrice, liquidity, false)
+export function getDeltaDownFromOutput(currentSqrtPrice: BN, targetSqrtPrice: BN, liquidity: BN, aToB: boolean): BN {
+  const sqrtPriceDiff = currentSqrtPrice.gt(targetSqrtPrice) ? currentSqrtPrice.sub(targetSqrtPrice) : targetSqrtPrice.sub(currentSqrtPrice)
+
+  if (liquidity.eq(ZERO) || sqrtPriceDiff.eq(ZERO)) {
+    return ZERO
+  }
+
+  let result
+  if (aToB) {
+    let product = liquidity.mul(sqrtPriceDiff)
+    let shoudRoundUp = product.and(U64_MAX).gt(ZERO)
+    result = shoudRoundUp ? product.shrn(64).add(ONE): product.shrn(64)
+  } else {
+    const numberator = liquidity.mul(sqrtPriceDiff).shln(64)
+    const denomminator = targetSqrtPrice.mul(currentSqrtPrice)
+    const quotient = numberator.div(denomminator)
+    result = quotient
+  }
+  return result
 }
 
 /**

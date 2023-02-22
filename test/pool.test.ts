@@ -21,7 +21,7 @@ describe('SDK Tests', () => {
     const a2b = true
     const byAmountIn = true
     // const amount = new BN('10000000000000')
-    const amount = new BN('10000000')
+    const amount = new BN('20000000000')
 
     const ticks = await getTicks(poolAddress)
     const tickdatas = getTickDataFromUrlData(ticks)
